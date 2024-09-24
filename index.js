@@ -298,13 +298,22 @@ bot.on('message', async (ctx) => {
         ctx.reply('An unexpected error occurred. Please try again later.');
     }
 });
+// Express server for webhook/polling and to keep the bot alive
+const express = require('express');
+const app = express();
 
-// Launch the bot
-bot.launch()
-    .then(() => {
-        console.log('Bot started successfully');
-    })
-    .catch((error) => {
-        console.error('Failed to start bot:', error);
-    });
+app.get('/', (req, res) => {
+    res.send('Bot is running...');
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    bot.launch()
+        .then(() => console.log('Bot started successfully'))
+        .catch((error) => console.error('Failed to start bot:', error));
+});
+
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
     
