@@ -3,6 +3,22 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const fs = require('fs');
 const path = './data.json';
 
+const express = require('express');
+const app = express();
+
+// Replit assigns a default port that can be accessed via process.env.PORT
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.send('Bot is running!');
+});
+
+// Start the Express server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const groupChatId = '-1002220708172'; // Your group chat ID
 
